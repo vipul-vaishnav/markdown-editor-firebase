@@ -1,25 +1,29 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect } from 'react';
+import { Routes, Route } from 'react-router-dom';
+import Header from './components/Header';
+import Home from './pages/Home';
+import Login from './pages/Login';
+import Register from './pages/Register';
+import NotFound from './pages/NotFound';
 
-function App() {
+const App = () => {
+  const year = new Date().getFullYear();
+
+  useEffect(() => {
+    document.title = `MARKDOWN | ${year}`;
+  }, [year]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="font-default text-base bg-back text-white min-h-screen w-full overflow-x-hidden">
+      <Header />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
     </div>
   );
-}
+};
 
 export default App;
