@@ -5,6 +5,8 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import NotFound from './pages/NotFound';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const App = () => {
   const year = new Date().getFullYear();
@@ -14,7 +16,7 @@ const App = () => {
   }, [year]);
 
   return (
-    <div className="font-default text-base bg-back text-white min-h-screen w-full overflow-x-hidden">
+    <div className="w-full min-h-screen overflow-x-hidden text-base text-white font-default bg-back">
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />
@@ -22,6 +24,7 @@ const App = () => {
         <Route path="/register" element={<Register />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
+      <ToastContainer theme="colored" />
     </div>
   );
 };

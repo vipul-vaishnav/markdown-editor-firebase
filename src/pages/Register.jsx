@@ -1,13 +1,53 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Google from './../images/google.png';
+import { toast } from 'react-toastify';
 
 const Register = () => {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    password: '',
+  });
+
+  const { name, email, password } = formData;
+
+  const handleChange = (e) => {
+    const newFormData = {
+      [e.target.name]: e.target.value,
+    };
+    setFormData((prev) => {
+      return { ...prev, ...newFormData };
+    });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (!name || name.trim().length === 0) {
+      toast.error('Please enter a valid name');
+      return;
+    }
+
+    if (!email || email.trim().length === 0) {
+      toast.error('Please enter a valid email');
+      return;
+    }
+
+    if (!password || password.trim().length < 8) {
+      toast.error('Password must be at least 8 characters');
+      return;
+    }
+
+    console.log(formData);
+    toast.success('Form submitted successfully!');
+  };
+
   return (
     <div className="max-w-xl px-6 py-8 mx-auto lg:px-12">
       <div className="px-4 py-6 bg-white rounded-xl text-back sm:p-8">
         <h1 className="mb-3 text-3xl font-bold">Register</h1>
         <p className="mb-6">Create an account to access the editor</p>
-        <form className="mb-6">
+        <form className="mb-6" onSubmit={handleSubmit}>
           <div className="mb-8">
             <label htmlFor="name" className="block text-lg font-medium w-max ">
               Name
@@ -17,6 +57,8 @@ const Register = () => {
               name="name"
               id="name"
               autoComplete="off"
+              value={name}
+              onChange={handleChange}
               className="block w-full pb-2 mt-2 text-lg border-b border-b-back outline-0 text-back"
             />
           </div>
@@ -29,6 +71,8 @@ const Register = () => {
               name="email"
               id="email"
               autoComplete="off"
+              value={email}
+              onChange={handleChange}
               className="block w-full pb-2 mt-2 text-lg border-b border-b-back outline-0 text-back"
             />
           </div>
@@ -41,6 +85,8 @@ const Register = () => {
               name="password"
               id="password"
               autoComplete="off"
+              value={password}
+              onChange={handleChange}
               className="block w-full pb-2 mt-2 text-lg border-b border-b-back outline-0 text-back"
             />
           </div>
