@@ -7,6 +7,7 @@ import Register from './pages/Register';
 import NotFound from './pages/NotFound';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { auth } from './firebase';
 
 const App = () => {
   const year = new Date().getFullYear();
