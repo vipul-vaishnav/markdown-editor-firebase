@@ -1,8 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { useSelector, useDispatch } from 'react-redux';
+import { loginExistingUser, clearState } from './../features/auth/authSlice';
+import Loader from './../components/Loader';
 import Google from './../images/google.png';
 
 const Login = () => {
+  const { user, isLoading, isError, isSuccess, message } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -32,9 +40,37 @@ const Login = () => {
       return;
     }
 
-    console.log(formData);
-    toast.success('Form submitted successfully!');
+    dispatch(loginExistingUser(formData));
   };
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success(message);
+      navigate(`/profile/${user.uid}`);
+      dispatch(clearState());
+    }
+
+    if (isError) {
+      let new_message = '';
+      if (message.includes('Error')) {
+        new_message =
+          message.split(' ')[1] +
+          ': ' +
+          message
+            .split(' ')[2]
+            .slice(0, -2)
+            .slice(1)
+            .split('/')[1]
+            .split('-')
+            .map((e) => e[0].toUpperCase() + e.slice(1))
+            .join(' ');
+      } else {
+        new_message = message.split(':')[1].slice(1).split('(')[0].slice(0, -1);
+      }
+      toast.error(new_message);
+      dispatch(clearState());
+    }
+  }, [isSuccess, isError, message, dispatch, navigate, user]);
 
   return (
     <div className="max-w-xl px-6 py-8 mx-auto lg:px-12">
@@ -72,8 +108,9 @@ const Login = () => {
           </div>
           <button
             type="submit"
-            className="w-full text-lg font-bold tracking-widest text-white uppercase transition-all duration-150 ease-linear border-2 rounded h-14 border-back bg-back hover:text-back hover:bg-white"
+            className="flex items-center justify-center w-full gap-5 text-lg font-bold tracking-widest text-white uppercase transition-all duration-150 ease-linear border-2 rounded h-14 border-back bg-back hover:text-back hover:bg-white"
           >
+            {isLoading && <Loader />}
             Login
           </button>
         </form>

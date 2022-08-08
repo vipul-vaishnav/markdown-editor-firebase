@@ -5,9 +5,13 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import NotFound from './pages/NotFound';
+import Editor from './pages/Editor';
+import Profile from './pages/Profile';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { auth } from './firebase';
+import { store } from './app/store';
+import { Provider } from 'react-redux';
+import PrivateComponent from './components/PrivateComponent';
 
 const App = () => {
   const year = new Date().getFullYear();
@@ -17,16 +21,23 @@ const App = () => {
   }, [year]);
 
   return (
-    <div className="w-full min-h-screen overflow-x-hidden text-base text-white font-default bg-back">
-      <Header />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-      <ToastContainer theme="colored" />
-    </div>
+    <Provider store={store}>
+      <div className="w-full min-h-screen overflow-x-hidden text-base text-white font-default bg-back">
+        <Header />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="*" element={<NotFound />} />
+          <Route path="/user/:id" element={<PrivateComponent />}>
+            <Route index exact element={<Profile />} />
+            <Route path="profile" element={<Profile />} />
+            <Route path="editor" element={<Editor />} />
+          </Route>
+        </Routes>
+        <ToastContainer theme="colored" />
+      </div>
+    </Provider>
   );
 };
 
