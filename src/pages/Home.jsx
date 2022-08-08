@@ -6,14 +6,16 @@ import TailwindIcon from './../images/tailwind-css-icon.svg';
 import ReduxIcon from './../images/redux-icon.svg';
 import FirebaseIcon from './../images/google-firebase-icon.svg';
 import Footer from './../components/Footer';
+import { useSelector } from 'react-redux';
 
 const Home = () => {
   const navigate = useNavigate();
+  const { user } = useSelector((state) => state.auth);
 
   return (
     <>
       {/* SECTION MAIN */}
-      <div className="px-6 py-6 lg:px-12 lg:flex lg:items-center lg:gap-2 xl:gap-0">
+      <div className="px-4 py-6 sm:px-6 lg:px-12 lg:flex lg:items-center lg:gap-2 xl:gap-0">
         <div className="w-full">
           <h1 className="mb-5 font-mono text-4xl font-extrabold leading-snug sm:text-6xl xl:text-7xl sm:mb-6">
             Hi! <span className="text-cyan-400">Welcome</span> To{' '}
@@ -37,7 +39,7 @@ const Home = () => {
             facilis blanditiis.
           </p>
           <button
-            onClick={() => navigate('/login')}
+            onClick={() => navigate(`/user/${user?.uid}/editor`)}
             className="w-full text-lg font-bold tracking-wider uppercase bg-blue-500 rounded h-14 hover:opacity-80 lg:max-w-xs"
           >
             Get Started
@@ -56,7 +58,7 @@ const Home = () => {
             d="M0,192L48,192C96,192,192,192,288,202.7C384,213,480,235,576,234.7C672,235,768,213,864,181.3C960,149,1056,107,1152,80C1248,53,1344,43,1392,37.3L1440,32L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
           ></path>
         </svg>
-        <div className="w-full px-6 py-12 bg-white md:py-8 lg:py-4 lg:px-12 text-back">
+        <div className="w-full px-4 py-12 bg-white sm:px-6 md:py-8 lg:py-4 lg:px-12 text-back">
           <h2 className="mb-6 text-4xl font-bold tracking-tight text-center sm:text-5xl lg:text-6xl">Built Using</h2>
           <p className="max-w-4xl mx-auto mb-12 text-xl leading-normal md:text-2xl md:text-center font-regular opacity-80 sm:mb-10">
             We have used cutting edge, industry loved and the most popular{' '}
@@ -97,13 +99,13 @@ const Home = () => {
         </svg>
       </div>
       {/* SECTION - 3 */}
-      <div className="px-6 py-6 pb-12 lg:px-12">
+      <div className="px-4 py-6 pb-12 sm:px-6 lg:px-12">
         <div className="max-w-5xl mx-auto">
           <h2 className="mb-8 text-5xl font-bold leading-snug sm:text-6xl xl:text-7xl sm:mb-6 lg:leading-normal">
             That's probably enough for now. What are you waiting for?
           </h2>
           <button
-            onClick={() => navigate('/login')}
+            onClick={() => navigate(`/user/${user?.uid}/editor`)}
             className="w-full text-lg font-bold tracking-wider uppercase bg-blue-500 rounded h-14 hover:opacity-80 lg:max-w-xs"
           >
             Go To Editor

@@ -9,7 +9,7 @@ const Footer = () => {
 
   return (
     <>
-      <footer className="flex items-center justify-between gap-6 px-6 py-9 lg:px-12">
+      <footer className="flex items-center justify-between gap-6 px-4 sm:px-6 py-9 lg:px-12">
         <Link to="/">
           <span className="font-mono text-3xl font-extrabold uppercase">Markdown</span>
         </Link>

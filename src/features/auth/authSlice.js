@@ -31,8 +31,13 @@ export const loginExistingUser = createAsyncThunk('auth/login', async (formData,
   }
 });
 
-export const checkUserStatus = createAsyncThunk('auth/checkAuth', () => {
-  authService.checkAuthStatus();
+// sign out
+export const signOutLoggedInUser = createAsyncThunk('auth/signOut', async (_, thunkAPI) => {
+  try {
+    await authService.logoutUser();
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error.message);
+  }
 });
 
 const authSlice = createSlice({
@@ -40,10 +45,13 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     clearState: (state, action) => {
-      state.isLoading = false;
       state.isError = false;
       state.isSuccess = false;
       state.message = '';
+    },
+
+    setUser: (state, action) => {
+      state.user = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -76,16 +84,14 @@ const authSlice = createSlice({
         state.isError = true;
         state.message = action.payload;
       })
-      .addCase(checkUserStatus.pending, (state, action) => {
-        state.isLoading = true;
-      })
-      .addCase(checkUserStatus.fulfilled, (state, action) => {
-        state.user = action.payload;
-        state.isLoading = false;
+      .addCase(signOutLoggedInUser.fulfilled, (state, action) => {
+        state.user = null;
+        state.isSuccess = true;
+        state.message = 'User Logged Out successfully';
       });
   },
 });
 
-export const { clearState } = authSlice.actions;
+export const { clearState, setUser } = authSlice.actions;
 
 export default authSlice.reducer;

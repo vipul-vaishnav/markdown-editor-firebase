@@ -1,4 +1,4 @@
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth';
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from 'firebase/auth';
 import { auth } from '../../firebase';
 
 // REGISTER
@@ -11,17 +11,15 @@ const loginUser = async (email, password) => {
   return await signInWithEmailAndPassword(auth, email, password);
 };
 
-// AUTH STATUS
-const checkAuthStatus = () => {
-  onAuthStateChanged(auth, (user) => {
-    return user ? user : null;
-  });
+// LOGOUT
+const logoutUser = async () => {
+  return await signOut(auth);
 };
 
 const authService = {
   registerUser,
   loginUser,
-  checkAuthStatus,
+  logoutUser,
 };
 
 export default authService;

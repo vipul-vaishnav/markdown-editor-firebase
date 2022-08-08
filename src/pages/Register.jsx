@@ -52,8 +52,7 @@ const Register = () => {
   useEffect(() => {
     if (isSuccess) {
       toast.success(message);
-      navigate(`/profile/${user.uid}`);
-      dispatch(clearState());
+      navigate(`/user/${user.uid}/profile`);
     }
 
     if (isError) {
@@ -74,12 +73,13 @@ const Register = () => {
         new_message = message.split(':')[1].slice(1).split('(')[0].slice(0, -1);
       }
       toast.error(new_message);
-      dispatch(clearState());
     }
+
+    dispatch(clearState());
   }, [isSuccess, isError, message, dispatch, navigate, user]);
 
   return (
-    <div className="max-w-xl px-6 py-8 mx-auto lg:px-12">
+    <div className="max-w-xl px-4 py-8 mx-auto sm:px-6 lg:px-12">
       <div className="px-4 py-6 bg-white rounded-xl text-back sm:p-8">
         <h1 className="mb-3 text-3xl font-bold">Register</h1>
         <p className="mb-6">Create an account to access the editor</p>
