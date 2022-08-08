@@ -10,10 +10,11 @@ const initialState = {
 };
 
 export const createNewUser = createAsyncThunk('auth/register', async (formData, thunkAPI) => {
-  const { email, password } = formData;
+  const { email, password, name } = formData;
 
   try {
     const res = await authService.registerUser(email, password);
+    authService.updateDisplayName(name);
     return { email: res.user.email, displayName: res.user.displayName, uid: res.user.uid };
   } catch (error) {
     return thunkAPI.rejectWithValue(error.message);
