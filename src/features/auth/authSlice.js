@@ -41,6 +41,16 @@ export const signOutLoggedInUser = createAsyncThunk('auth/signOut', async (_, th
   }
 });
 
+// google sign in
+export const googleAuthFunc = createAsyncThunk('auth/google', async (_, thunkAPI) => {
+  try {
+    const res = await authService.googleSignIn();
+    return [{ email: res.user.email, displayName: res.user.displayName, uid: res.user.uid }, res._tokenResponse];
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error.message);
+  }
+});
+
 const authSlice = createSlice({
   name: 'auth',
   initialState,
@@ -81,6 +91,21 @@ const authSlice = createSlice({
         state.message = 'User LoggedIn Successfully';
       })
       .addCase(loginExistingUser.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+      })
+      .addCase(googleAuthFunc.pending, (state, action) => {
+        state.isLoading = true;
+      })
+      .addCase(googleAuthFunc.fulfilled, (state, action) => {
+        state.user = action.payload[0];
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.message = action.payload[1].isNewUser ? 'User Registered Successfully' : 'User Logged In Successfully';
+      })
+      .addCase(googleAuthFunc.rejected, (state, action) => {
+        state.user = null;
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;

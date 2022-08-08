@@ -1,4 +1,11 @@
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, updateProfile } from 'firebase/auth';
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+  updateProfile,
+  GoogleAuthProvider,
+  signInWithPopup,
+} from 'firebase/auth';
 import { auth } from '../../firebase';
 
 // REGISTER
@@ -23,11 +30,19 @@ const logoutUser = async () => {
   return await signOut(auth);
 };
 
+// Google Auth
+// google sign in
+const googleSignIn = async () => {
+  const provider = new GoogleAuthProvider();
+  return await signInWithPopup(auth, provider);
+};
+
 const authService = {
   registerUser,
   loginUser,
   logoutUser,
   updateDisplayName,
+  googleSignIn,
 };
 
 export default authService;

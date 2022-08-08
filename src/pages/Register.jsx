@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useSelector, useDispatch } from 'react-redux';
-import { createNewUser, clearState } from './../features/auth/authSlice';
+import { createNewUser, clearState, googleAuthFunc } from './../features/auth/authSlice';
 import Loader from './../components/Loader';
 import Google from './../images/google.png';
 
@@ -26,6 +26,10 @@ const Register = () => {
     setFormData((prev) => {
       return { ...prev, ...newFormData };
     });
+  };
+
+  const handleGoogleAuth = () => {
+    dispatch(googleAuthFunc());
   };
 
   const handleSubmit = (e) => {
@@ -135,8 +139,12 @@ const Register = () => {
           </button>
         </form>
         <p className="text-center opacity-80">OR</p>
-        <button className="flex items-center justify-center w-full gap-3 mt-6 text-sm font-bold tracking-widest uppercase transition-all duration-150 ease-linear bg-white border-2 rounded sm:text-lg h-14 border-back text-back hover sm:gap-4">
-          <img src={Google} alt="google-icon" className="w-4 sm:w-6" />
+        <button
+          onClick={handleGoogleAuth}
+          className="flex items-center justify-center w-full gap-3 mt-6 text-sm font-bold tracking-widest uppercase transition-all duration-150 ease-linear bg-white border-2 rounded sm:text-lg h-14 border-back text-back hover sm:gap-4"
+        >
+          {isLoading && <Loader />}
+          {!isLoading && <img src={Google} alt="google-icon" className="w-4 sm:w-6" />}
           <span>Continue with google</span>
         </button>
       </div>
