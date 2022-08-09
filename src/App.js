@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import Header from './components/Header';
 import Home from './pages/Home';
 import Login from './pages/Login';
@@ -14,6 +14,17 @@ import { Provider } from 'react-redux';
 import PrivateComponent from './components/PrivateComponent';
 
 const App = () => {
+  const [hide, setHide] = useState(false);
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    if (!pathname.includes('editor')) {
+      setHide(true);
+    } else {
+      setHide(false);
+    }
+  }, [pathname]);
+
   const year = new Date().getFullYear();
 
   useEffect(() => {
@@ -22,8 +33,8 @@ const App = () => {
 
   return (
     <Provider store={store}>
-      <div className="w-full min-h-screen overflow-x-hidden text-base text-white  font-default bg-back">
-        <Header />
+      <div className="w-full min-h-screen overflow-x-hidden text-base text-white font-default bg-back">
+        {hide && <Header />}
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
