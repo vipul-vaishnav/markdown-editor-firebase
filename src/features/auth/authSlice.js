@@ -7,6 +7,7 @@ const initialState = {
   isSuccess: false,
   isError: false,
   message: '',
+  isgoogleAuth: false,
 };
 
 export const createNewUser = createAsyncThunk('auth/register', async (formData, thunkAPI) => {
@@ -46,6 +47,17 @@ export const googleAuthFunc = createAsyncThunk('auth/google', async (_, thunkAPI
   try {
     const res = await authService.googleSignIn();
     return [{ email: res.user.email, displayName: res.user.displayName, uid: res.user.uid }, res._tokenResponse];
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error.message);
+  }
+});
+
+// update profile name
+
+export const updateProfileName = createAsyncThunk('auth/updateProfileName', async (newName, thunkAPI) => {
+  try {
+    authService.updateDisplayName(newName);
+    return newName;
   } catch (error) {
     return thunkAPI.rejectWithValue(error.message);
   }
@@ -97,11 +109,13 @@ const authSlice = createSlice({
       })
       .addCase(googleAuthFunc.pending, (state, action) => {
         state.isLoading = true;
+        state.isgoogleAuth = true;
       })
       .addCase(googleAuthFunc.fulfilled, (state, action) => {
         state.user = action.payload[0];
         state.isLoading = false;
         state.isSuccess = true;
+        state.isgoogleAuth = false;
         state.message = action.payload[1].isNewUser ? 'User Registered Successfully' : 'User Logged In Successfully';
       })
       .addCase(googleAuthFunc.rejected, (state, action) => {
@@ -109,11 +123,26 @@ const authSlice = createSlice({
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
+        state.isgoogleAuth = false;
       })
       .addCase(signOutLoggedInUser.fulfilled, (state, action) => {
         state.user = null;
         state.isSuccess = true;
         state.message = 'User Logged Out successfully';
+      })
+      .addCase(updateProfileName.pending, (state, action) => {
+        state.isLoading = true;
+      })
+      .addCase(updateProfileName.fulfilled, (state, action) => {
+        state.user = { ...state.user, displayName: action.payload };
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.message = 'Name Updated successfully';
+      })
+      .addCase(updateProfileName.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
       });
   },
 });

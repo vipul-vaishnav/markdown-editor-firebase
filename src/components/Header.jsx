@@ -17,7 +17,7 @@ const Header = () => {
   useEffect(() => {
     if (isSuccess && !user) {
       toast.success(message);
-      if (user === null) navigate('/');
+      navigate('/');
     }
     dispatch(clearState());
   }, [isSuccess, message, user, navigate, dispatch]);
@@ -47,10 +47,10 @@ const Header = () => {
               Editor
             </Link>
             <Link
-              to={`/user/${user.uid}/profile`}
+              to={`/user/${user.uid}/details`}
               className="font-bold opacity-80 hover:opacity-100 sm:text-lg hover:underline"
             >
-              Profile
+              You
             </Link>
             <button onClick={signOut} className="font-bold opacity-80 hover:opacity-100 sm:text-lg hover:underline">
               Logout

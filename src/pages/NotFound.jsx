@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 const NotFound = () => {
   return (
-    <div className="px-6 pt-6 lg:px-12">
+    <div className="px-4 pt-6 sm:px-6 lg:px-12">
       <h1 className="font-mono font-extrabold text-center sm:text-9xl text-7xl">Oops!</h1>
       <p className="my-6 mt-12 text-lg font-bold sm:text-center">We can't seem to find the page you're looking for.</p>
       <p className="my-6 text-lg font-bold tracking-widest uppercase sm:text-center">

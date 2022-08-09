@@ -7,7 +7,7 @@ import Loader from './../components/Loader';
 import Google from './../images/google.png';
 
 const Login = () => {
-  const { user, isLoading, isError, isSuccess, message } = useSelector((state) => state.auth);
+  const { user, isLoading, isError, isSuccess, message, isgoogleAuth } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -50,11 +50,10 @@ const Login = () => {
   useEffect(() => {
     if (isSuccess) {
       toast.success(message);
-      navigate(`/user/${user.uid}/profile`);
+      navigate(`/user/${user.uid}/details`);
     }
 
     if (isError) {
-      console.log(message);
       let new_message = '';
       if (message.includes('Error')) {
         new_message =
@@ -115,7 +114,7 @@ const Login = () => {
             type="submit"
             className="flex items-center justify-center w-full gap-5 text-lg font-bold tracking-widest text-white uppercase transition-all duration-150 ease-linear border-2 rounded h-14 border-back bg-back hover:text-back hover:bg-white"
           >
-            {isLoading && <Loader />}
+            {isLoading && !isgoogleAuth && <Loader />}
             Login
           </button>
         </form>
@@ -124,8 +123,8 @@ const Login = () => {
           onClick={handleGoogleAuth}
           className="flex items-center justify-center w-full gap-3 mt-6 text-sm font-bold tracking-widest uppercase transition-all duration-150 ease-linear bg-white border-2 rounded sm:text-lg h-14 border-back text-back hover sm:gap-4"
         >
-          {isLoading && <Loader />}
-          {!isLoading && <img src={Google} alt="google-icon" className="w-4 sm:w-6" />}
+          {isLoading && isgoogleAuth && <Loader />}
+          {!isLoading && !isgoogleAuth && <img src={Google} alt="google-icon" className="w-4 sm:w-6" />}
           <span>Continue with google</span>
         </button>
       </div>
