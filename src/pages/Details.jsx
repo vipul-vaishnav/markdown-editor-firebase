@@ -40,7 +40,7 @@ const Details = () => {
   return (
     <div className="flex flex-col gap-6 px-4 py-6 lg:flex-row sm:px-6 lg:px-12">
       <div className="w-full lg:max-w-sm">
-        <div className="relative w-full mx-auto mb-0">
+        <div className="relative w-full mx-auto mb-0 bg-primary">
           <img src={ProfileBg} alt="profile-background" className="w-full rounded-t-xl h-36 sm:h-40 lg:h-48" />
           <div className="absolute grid w-24 h-24 text-4xl font-extrabold -translate-x-1/2 -translate-y-1/2 bg-gray-100 rounded-full shadow-md sm:text-5xl sm:w-32 sm:h-32 top-100 left-1/2 place-content-center text-back">
             <span>{name && name.trim().length > 0 ? name[0].toUpperCase() : 'U'}</span>

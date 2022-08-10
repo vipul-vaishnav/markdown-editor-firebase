@@ -5,12 +5,17 @@ import TrashIcon from './../icons/TrashIcon';
 import SaveIcon from './../icons/SaveIcon';
 import { Link } from 'react-router-dom';
 
-const EditorHeader = () => {
+const EditorHeader = ({ setShowSidebar }) => {
   return (
     <header className="flex items-center justify-between w-full pr-4 md:pr-6 h-14 md:h-20 bg-primary">
       <div className="flex items-center h-full">
         <div className="grid w-20 h-full bg-back place-content-center">
-          <button className="text-secondary">
+          <button
+            onClick={() => {
+              setShowSidebar(true);
+            }}
+            className="text-secondary"
+          >
             <MenuIcon />
           </button>
         </div>

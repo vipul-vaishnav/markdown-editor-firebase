@@ -1,7 +1,7 @@
 import React from 'react';
 import EyeIcon from './../icons/EyeIcon';
 
-const EditorMain = () => {
+const EditorMain = ({ lightMode }) => {
   return (
     <>
       <div className="flex items-center justify-between w-full bg-tertiary">
@@ -20,8 +20,12 @@ const EditorMain = () => {
       </div>
 
       {/* EDITOR HERE */}
-      <div className="flex items-start justify-between w-full h-[calc(100vh-7.5rem)] bg-back overflow-hidden">
-        <div className="w-full h-full px-4 py-4 overflow-x-hidden overflow-y-auto text-left text-white border-r-0 border-white md:border-r">
+      <div
+        className={`flex items-start justify-between w-full md:h-[calc(100vh-7.5rem)] h-[calc(100vh-6rem)] bg-${
+          lightMode ? 'white' : 'back'
+        } overflow-hidden text-${lightMode ? 'back' : 'white'}`}
+      >
+        <div className="w-full h-full px-4 py-4 overflow-x-hidden overflow-y-auto text-left border-r-0 border-white md:border-r">
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Vel itaque commodi fugit eos, consequatur saepe
           provident inventore ipsam quibusdam iste! Omnis quo labore, nam iste ratione ad nostrum quae, expedita dicta
           obcaecati voluptate iure ullam ipsa hic sed facilis illo amet libero doloremque maiores dolorem consectetur
@@ -58,7 +62,7 @@ const EditorMain = () => {
           soluta tempora rem explicabo. Similique a, porro unde ex quod molestiae minus provident, reiciendis saepe,
           adipisci fugiat. Pariatur ipsa voluptatibus praesentium odio dolores magnam, laboriosam alias minus facere.
         </div>
-        <div className="hidden w-full h-full px-4 py-4 overflow-x-hidden overflow-y-auto text-left text-white border-l-0 border-white md:border-l md:block">
+        <div className="hidden w-full h-full px-4 py-4 overflow-x-hidden overflow-y-auto text-left border-l-0 border-white md:border-l md:block">
           Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorem reprehenderit impedit, ipsa ad voluptas
           fugit rerum accusamus alias. Facilis laboriosam, soluta dolores, assumenda repellat illo mollitia aperiam
           aspernatur illum doloremque amet. Ratione quis mollitia facilis? Similique veritatis qui fuga voluptatibus

@@ -13,6 +13,7 @@ export const useAuthStatus = () => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
         const payload = { email: user.email, displayName: user.displayName, uid: user.uid };
+        localStorage.setItem('mdUser', JSON.stringify(payload));
         dispatch(setUser(payload));
         setLoggedIn(true);
       }
