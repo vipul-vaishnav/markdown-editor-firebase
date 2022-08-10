@@ -23,7 +23,7 @@ const EditorMain = ({ lightMode }) => {
       <div
         className={`flex items-start justify-between w-full md:h-[calc(100vh-7.5rem)] h-[calc(100vh-6rem)] bg-${
           lightMode ? 'white' : 'back'
-        } overflow-hidden text-${lightMode ? 'back' : 'white'}`}
+        } overflow-hidden text-${lightMode ? 'back' : 'white'} transition-all duration-300 ease-linear delay-100`}
       >
         <div className="w-full h-full px-4 py-4 overflow-x-hidden overflow-y-auto text-left border-r-0 border-white md:border-r">
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Vel itaque commodi fugit eos, consequatur saepe
