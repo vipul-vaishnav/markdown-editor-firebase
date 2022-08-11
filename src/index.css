@@ -18,3 +18,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.textarea-container::-webkit-scrollbar {
+  display: none;
+}
