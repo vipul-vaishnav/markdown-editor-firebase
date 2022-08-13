@@ -12,7 +12,7 @@ import SunIcon from './../icons/SunIcon';
 import { signOutLoggedInUser, clearState } from './../features/auth/authSlice';
 import { toast } from 'react-toastify';
 
-const EditorSidebar = ({ setShowSidebar, showSidebar, setLightMode, lightMode }) => {
+const EditorSidebar = ({ setShowSidebar, showSidebar, setLightMode, lightMode, setWindow }) => {
   const { user, isSuccess, message } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -38,7 +38,7 @@ const EditorSidebar = ({ setShowSidebar, showSidebar, setLightMode, lightMode })
       {/* close button */}
       <button
         onClick={() => setShowSidebar(false)}
-        className="bg-secondary text-white md:h-20 h-14 w-full flex items-center justify-center gap-5 text-lg font-bold tracking-widest uppercase transition-all duration-150 ease-linear hover:text-back hover:bg-white"
+        className="flex items-center justify-center w-full gap-5 text-lg font-bold tracking-widest text-white uppercase transition-all duration-150 ease-linear bg-secondary md:h-20 h-14 hover:text-back hover:bg-white"
       >
         <CloseIcon />
         <span>Close</span>
@@ -51,7 +51,10 @@ const EditorSidebar = ({ setShowSidebar, showSidebar, setLightMode, lightMode })
           </Link>
         </h1>
         <div className="px-5 mt-4">
-          <button className="flex items-center justify-center w-full h-10 px-3 font-bold tracking-widest text-white uppercase transition-all duration-150 ease-linear rounded gap-2 md:h-12 bg-secondary hover:opacity-80">
+          <button
+            onClick={() => setWindow(true)}
+            className="flex items-center justify-center w-full h-10 gap-2 px-3 font-bold tracking-widest text-white uppercase transition-all duration-150 ease-linear rounded md:h-12 bg-secondary hover:opacity-80"
+          >
             <PlusIcon />
             <span>New Document</span>
           </button>
@@ -59,13 +62,13 @@ const EditorSidebar = ({ setShowSidebar, showSidebar, setLightMode, lightMode })
       </div>
       <hr />
       {/* Navbar */}
-      <div className="my-4 mx-6">
+      <div className="mx-6 my-4">
         <nav>
           <ul>
             <li className="mb-4">
               <Link
                 to="/"
-                className="flex py-3 hover:bg-secondary text-white items-center justify-start gap-4 text-lg px-4 rounded w-full"
+                className="flex items-center justify-start w-full gap-4 px-4 py-3 text-lg text-white rounded hover:bg-secondary"
               >
                 <HomeIcon /> Home
               </Link>
@@ -73,7 +76,7 @@ const EditorSidebar = ({ setShowSidebar, showSidebar, setLightMode, lightMode })
             <li className="mb-4">
               <Link
                 to={`/user/${user?.id}/details`}
-                className="flex items-center py-3 justify-start gap-4 text-lg w-full hover:bg-secondary text-white px-4 rounded"
+                className="flex items-center justify-start w-full gap-4 px-4 py-3 text-lg text-white rounded hover:bg-secondary"
               >
                 <YouIcon /> You
               </Link>
@@ -81,7 +84,7 @@ const EditorSidebar = ({ setShowSidebar, showSidebar, setLightMode, lightMode })
             <li>
               <button
                 onClick={onSignout}
-                className="flex items-center py-3 justify-start gap-4 text-lg w-full hover:bg-secondary text-white px-4 rounded"
+                className="flex items-center justify-start w-full gap-4 px-4 py-3 text-lg text-white rounded hover:bg-secondary"
               >
                 <LogoutIcon /> Logout
               </button>
@@ -90,7 +93,7 @@ const EditorSidebar = ({ setShowSidebar, showSidebar, setLightMode, lightMode })
         </nav>
       </div>
       {/* Toggle */}
-      <div className="flex justify-start items-center gap-4 left-0 bottom-10 px-4 mx-6 absolute">
+      <div className="absolute left-0 flex items-center justify-start gap-4 px-4 mx-6 bottom-10">
         <div>
           <MoonIcon />
         </div>

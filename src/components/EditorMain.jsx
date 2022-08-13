@@ -7,6 +7,7 @@ const EditorMain = ({ lightMode }) => {
   const [value, setValue] = useState('# Welcome to *MARKDOWN*');
   const ref = useRef();
   const handleHeight = (e) => {
+    ref.current.style.height = 'auto';
     let textAreaHeight = e.target.scrollHeight;
     ref.current.style.height = textAreaHeight + 'px';
   };
@@ -56,6 +57,7 @@ const EditorMain = ({ lightMode }) => {
             }}
             onKeyUp={handleHeight}
             ref={ref}
+            spellCheck={false}
           />
         </div>
         {/* PREVIEW */}

@@ -5,7 +5,7 @@ import TrashIcon from './../icons/TrashIcon';
 import SaveIcon from './../icons/SaveIcon';
 import { Link } from 'react-router-dom';
 
-const EditorHeader = ({ setShowSidebar }) => {
+const EditorHeader = ({ setShowSidebar, setDeleteConfirm }) => {
   return (
     <header className="flex items-center justify-between w-full pr-4 md:pr-6 h-14 md:h-20 bg-primary">
       <div className="flex items-center h-full">
@@ -36,7 +36,7 @@ const EditorHeader = ({ setShowSidebar }) => {
       </div>
       <div className="flex items-center gap-4 md:gap-6">
         <div>
-          <button>
+          <button onClick={() => setDeleteConfirm(true)} className="transition-all duration-150 hover:text-secondary">
             <TrashIcon />
           </button>
         </div>
