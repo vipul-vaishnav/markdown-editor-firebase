@@ -27,6 +27,7 @@ const EditorWindow = ({ setWindow, lightMode }) => {
           id="name"
           className="block w-full px-2 py-3 my-6 mb-4 text-lg border-2 rounded-md outline-none border-secondary text-back"
           placeholder="Type here..."
+          autoComplete="off"
         />
         <button className="flex items-center justify-center w-full gap-3 py-3 text-lg font-bold tracking-widest text-white uppercase transition-all duration-150 ease-in border-2 rounded-md border-secondary bg-secondary hover:opacity-70">
           <PlusIcon />
