@@ -1,11 +1,42 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import SearchIcon from './../icons/SearchIcon';
 import FilterIcon from './../icons/FilterIcon';
 import FilterWindow from './FilterWindow';
+import { useSelector, useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
+import Loader from './Loader';
+import { getDocsFromDB, clearState } from '../features/doc/docSlice';
+import StarredIcon from './../icons/StarredIcon';
+import StarredIconTrue from './../icons/StarredIconTrue';
+import MoreIcon from './../icons/MoreIcon';
 
 const List = () => {
   const [query, setQuery] = useState('');
   const [showFilterWindow, setShowFilterWindow] = useState(false);
+  const { docs, isLoading, isError, message } = useSelector((state) => state.doc);
+  const { user } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getDocsFromDB(user?.uid));
+  }, [dispatch, user?.uid]);
+
+  useEffect(() => {
+    if (isError) {
+      toast.error(message);
+    }
+
+    dispatch(clearState());
+  }, [isError, dispatch, message]);
+
+  const convertTimestamp = (dateStr) => {
+    const fireBaseTime = new Date(dateStr);
+    const day = fireBaseTime.getDate() < 10 ? `0${fireBaseTime.getDate()}` : fireBaseTime.getDate();
+    const month = fireBaseTime.getMonth() < 10 ? `0${fireBaseTime.getMonth()}` : fireBaseTime.getMonth();
+    const year = fireBaseTime.getFullYear();
+
+    return `${day}-${month}-${year}`;
+  };
 
   return (
     <div className="w-full">
@@ -38,41 +69,55 @@ const List = () => {
           </button>
         </div>
       </div>
-      Lorem ipsum dolor, sit amet consectetur adipisicing elit. Numquam iste sunt aliquid. Voluptatum deserunt rerum,
-      iusto quaerat natus perferendis provident, quas mollitia magni aut quidem corrupti minus officia similique
-      pariatur, architecto voluptatem a distinctio. Odio inventore neque molestiae esse, consequuntur maiores quibusdam
-      illum ratione maxime ullam dolore non minus velit doloremque atque tempore! Hic, delectus. Labore, reiciendis?
-      Quos ratione, reprehenderit dolores minus vitae molestiae ipsum, saepe, rem sint totam id nesciunt vero optio
-      omnis modi qui aspernatur exercitationem iste ex doloremque error. Minima adipisci culpa, architecto quas sunt
-      doloremque delectus provident vitae sed debitis est aliquam, sequi molestias labore minus? Enim laborum nulla id
-      consequuntur velit sint praesentium, rerum quam delectus blanditiis ducimus nihil iusto quidem porro non
-      dignissimos inventore optio soluta libero expedita eius quasi tempore reprehenderit debitis. Ratione eos
-      consequuntur quia minima. Neque quas, adipisci quibusdam beatae, et, consequatur excepturi temporibus deserunt
-      labore sint fugiat eos voluptatum expedita at voluptates ducimus. Dolor, dicta. Voluptate ducimus aliquid ipsam
-      optio eveniet nihil, ad facere, quas laborum eius earum molestiae possimus id quod inventore beatae. Laborum
-      excepturi dignissimos quae aliquam perferendis similique exercitationem itaque vero cumque. Ullam fugit optio
-      itaque blanditiis, illum necessitatibus dicta? Inventore aliquam architecto sequi minima doloremque maxime
-      officiis quaerat pariatur, porro deleniti distinctio, corrupti perspiciatis error deserunt magni ad vero, natus et
-      omnis rem. Voluptatibus saepe ad, aliquid, voluptatum illum officiis quas odit molestiae, aspernatur neque nostrum
-      amet eius. Eius dolorem earum atque ad asperiores, fuga libero quia. Doloremque quam officiis, odit sequi, itaque
-      exercitationem consequatur atque facere libero praesentium laborum voluptas! Vel sequi nulla nam praesentium vero
-      inventore expedita similique nihil consequuntur dolorem eveniet et, aliquid nisi provident voluptas ipsa suscipit
-      laborum! Inventore velit doloremque nesciunt consequuntur voluptas eius, animi numquam, aliquam pariatur earum,
-      dolor repudiandae? Architecto incidunt eaque, laboriosam quae aperiam eius animi mollitia facere sapiente delectus
-      aliquid vitae necessitatibus sunt quia neque quibusdam! Cum amet magni quos distinctio aliquid maiores labore
-      fugit itaque soluta consequatur accusamus nulla iure explicabo facilis, voluptatibus qui nam sint! Voluptas, quis
-      aliquam cum in libero recusandae expedita eos impedit, quas reiciendis ad animi veniam laborum corrupti. Libero,
-      laudantium nemo! Quam unde ad id, sunt incidunt officia architecto labore iste aliquam exercitationem, cumque cum
-      minima quaerat. Aperiam architecto vero voluptatem quod unde deserunt, consequatur reiciendis a perspiciatis iste
-      ducimus perferendis distinctio laudantium aspernatur alias doloremque provident repudiandae voluptatum vel?
-      Corrupti adipisci recusandae officia veritatis! Rerum voluptas non doloremque quam distinctio placeat nemo ducimus
-      nam, perferendis iure consequuntur nulla optio deleniti recusandae accusamus animi necessitatibus. Fuga ducimus ut
-      quam eos aliquam! Dolor sequi tenetur inventore sit corrupti eos harum ut accusamus, vitae tempora dolorum
-      sapiente nesciunt aut est beatae quo? Unde, officiis vero cupiditate voluptas velit corrupti iste nobis, ipsum
-      dolorum commodi architecto alias delectus porro debitis, dolore tempore ab laboriosam perspiciatis harum minima
-      perferendis? Quae earum, inventore obcaecati eum eius nesciunt iure quibusdam repellendus quis illum laborum?
-      Corporis deserunt culpa voluptates dignissimos tenetur sit impedit omnis fuga modi sunt, odit doloremque
-      architecto velit veritatis amet quasi aut harum inventore. Dolore?
+
+      {isLoading ? (
+        <Loader />
+      ) : docs && docs.length === 0 ? (
+        <>
+          <h1>No Records Found</h1>
+        </>
+      ) : (
+        <>
+          <div className="overflow-x-auto text-back text-center">
+            <table className="table table-zebra w-full">
+              <thead className="text-center">
+                <tr>
+                  <th></th>
+                  <th className="text-left">Name</th>
+                  <th className="text-left">Document ID</th>
+                  <th>Created At</th>
+                  <th>Starred</th>
+                  <th>Open In Editor</th>
+                </tr>
+              </thead>
+              <tbody>
+                {docs.map((doc, idx) => {
+                  return (
+                    <tr key={idx} className="text-center">
+                      <th>{idx + 1}</th>
+                      <td className="text-left">{doc.name}</td>
+                      <td className="text-left">{doc._id}</td>
+                      <td>{convertTimestamp(doc.createdAt)}</td>
+                      <td>
+                        <div className="tooltip" data-tip={doc.isStarred ? 'Unmark Star' : 'Mark Star'}>
+                          <button>{doc.isStarred ? <StarredIconTrue /> : <StarredIcon />}</button>
+                        </div>
+                      </td>
+                      <td>
+                        <div className="tooltip" data-tip="open in editor">
+                          <button className="btn btn-circle bg-secondary outline-none border-0 hover:bg-back btn-xs">
+                            <MoreIcon />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </>
+      )}
     </div>
   );
 };

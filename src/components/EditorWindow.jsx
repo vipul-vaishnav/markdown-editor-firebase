@@ -1,11 +1,33 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PlusIcon from './../icons/PlusIcon';
+import { toast } from 'react-toastify';
+import { useSelector, useDispatch } from 'react-redux';
+import Loader from './Loader';
+import { addNewDocumentInDB, clearState } from './../features/doc/docSlice';
 
 const EditorWindow = ({ setWindow, lightMode }) => {
+  const [name, setName] = useState('');
+  const { isSuccess, isError, isLoading, message } = useSelector((state) => state.doc);
+  const { user } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    setWindow(false);
+    dispatch(addNewDocumentInDB({ name, userRef: user?.uid, isStarred: false }));
   };
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success(message);
+      setWindow(false);
+    }
+
+    if (isError) {
+      toast.error(message);
+    }
+
+    dispatch(clearState());
+  }, [isSuccess, isError, message, dispatch, setWindow]);
 
   return (
     <div
@@ -28,9 +50,11 @@ const EditorWindow = ({ setWindow, lightMode }) => {
           className="block w-full px-2 py-3 my-6 mb-4 text-lg border-2 rounded-md outline-none border-secondary text-back"
           placeholder="Type here..."
           autoComplete="off"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
         />
         <button className="flex items-center justify-center w-full gap-3 py-3 text-lg font-bold tracking-widest text-white uppercase transition-all duration-150 ease-in border-2 rounded-md border-secondary bg-secondary hover:opacity-70">
-          <PlusIcon />
+          {isLoading ? <Loader /> : <PlusIcon />}
           <span>Create</span>
         </button>
       </form>

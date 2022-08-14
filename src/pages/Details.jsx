@@ -38,7 +38,7 @@ const Details = () => {
   }, [isSuccess, isError, dispatch, message, user]);
 
   return (
-    <div className="flex flex-col gap-6 px-4 py-6 lg:flex-row sm:px-6 lg:px-12">
+    <div className="flex flex-col lg:gap-6 gap-16 px-4 py-6 lg:flex-row sm:px-6 lg:px-12">
       <div className="w-full lg:max-w-sm">
         <div className="relative w-full mx-auto mb-0 bg-primary">
           <img src={ProfileBg} alt="profile-background" className="w-full rounded-t-xl h-36 sm:h-40 lg:h-48" />
