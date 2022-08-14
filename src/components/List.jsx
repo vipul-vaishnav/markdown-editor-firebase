@@ -1,16 +1,19 @@
 import React, { useState } from 'react';
 import SearchIcon from './../icons/SearchIcon';
 import FilterIcon from './../icons/FilterIcon';
+import FilterWindow from './FilterWindow';
 
 const List = () => {
   const [query, setQuery] = useState('');
+  const [showFilterWindow, setShowFilterWindow] = useState(false);
 
   return (
     <div className="w-full">
       <h1 className="w-full text-4xl font-bold tracking-wider text-center uppercase text-secondary sm:text-6xl">
         Your Documents
       </h1>
-      <div className="flex items-center justify-between my-12">
+      <div className="relative flex items-center justify-between gap-5 my-12">
+        {showFilterWindow && <FilterWindow />}
         <div className="flex items-center justify-start w-full gap-0">
           <label htmlFor="query" className="w-full h-full max-w-[50px] bg-secondary text-white p-3 rounded-l-md">
             <SearchIcon />
@@ -27,7 +30,10 @@ const List = () => {
           />
         </div>
         <div>
-          <button className="w-full h-full max-w-[50px] bg-secondary text-white p-3 rounded-md">
+          <button
+            onClick={() => setShowFilterWindow((prev) => !prev)}
+            className="w-full h-full max-w-[50px] bg-secondary text-white p-3 rounded-md"
+          >
             <FilterIcon />
           </button>
         </div>

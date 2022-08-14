@@ -22,7 +22,7 @@ const Details = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(updateProfileName(name));
+    dispatch(updateProfileName({ newName: name, userID: user?.docID }));
   };
 
   useEffect(() => {

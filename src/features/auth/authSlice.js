@@ -18,7 +18,8 @@ export const createNewUser = createAsyncThunk('auth/register', async (formData, 
   try {
     const res = await authService.registerUser(email, password);
     authService.updateDisplayName(name);
-    return { email: res.user.email, displayName: res.user.displayName, uid: res.user.uid };
+    const docRef = await authService.addNewUser({ email: res.user.email, displayName: name, uid: res.user.uid });
+    return { email: res.user.email, displayName: res.user.displayName, uid: res.user.uid, docID: docRef.id };
   } catch (error) {
     return thunkAPI.rejectWithValue(error.message);
   }
@@ -57,9 +58,11 @@ export const googleAuthFunc = createAsyncThunk('auth/google', async (_, thunkAPI
 
 // update profile name
 
-export const updateProfileName = createAsyncThunk('auth/updateProfileName', async (newName, thunkAPI) => {
+export const updateProfileName = createAsyncThunk('auth/updateProfileName', async (data, thunkAPI) => {
+  const { newName, userID } = data;
   try {
     authService.updateDisplayName(newName);
+    authService.updateUserInDB(userID, newName);
     return newName;
   } catch (error) {
     return thunkAPI.rejectWithValue(error.message);

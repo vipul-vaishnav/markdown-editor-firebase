@@ -6,18 +6,29 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
 } from 'firebase/auth';
-import { auth } from '../../firebase';
+import { collection, addDoc, updateDoc, doc, serverTimestamp } from 'firebase/firestore';
+import { auth, db } from '../../firebase';
 
 // REGISTER
 const registerUser = async (email, password) => {
   return await createUserWithEmailAndPassword(auth, email, password);
 };
 
+const addNewUser = async (payload) => {
+  const colRef = collection(db, 'USERS');
+  return await addDoc(colRef, { ...payload, createdAt: serverTimestamp() });
+};
+
 // UPDATEPROFILE
 const updateDisplayName = async (name) => {
-  await updateProfile(auth.currentUser, {
+  return await updateProfile(auth.currentUser, {
     displayName: name,
   });
+};
+
+const updateUserInDB = async (userID, name) => {
+  const docRef = doc(db, 'USERS', userID);
+  return await updateDoc(docRef, { displayName: name, lastUpdatedAt: serverTimestamp() });
 };
 
 // LOGIN
@@ -39,9 +50,11 @@ const googleSignIn = async () => {
 
 const authService = {
   registerUser,
+  addNewUser,
   loginUser,
   logoutUser,
   updateDisplayName,
+  updateUserInDB,
   googleSignIn,
 };
 
