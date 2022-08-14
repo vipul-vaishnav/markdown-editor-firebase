@@ -81,11 +81,6 @@ export const docSlice = createSlice({
       .addCase(getDocsFromDB.fulfilled, (state, action) => {
         state.docs = action.payload;
         state.isLoading = false;
-      })
-      .addCase(getDocsFromDB.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isError = true;
-        state.message = 'Something went wrong!';
       });
   },
 });
