@@ -30,7 +30,7 @@ const EditorHeader = ({ setShowSidebar, setDeleteConfirm }) => {
           </div>
           <div>
             <h2 className="hidden text-gray-500 md:block">Document Name</h2>
-            <h2>Untitled</h2>
+            <h2>welcome.md</h2>
           </div>
         </div>
       </div>

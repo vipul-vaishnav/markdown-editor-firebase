@@ -20,6 +20,7 @@ export const addNewDocumentInDB = createAsyncThunk('doc/addNew', async (data, th
   }
 });
 
+// Getting documents
 export const getDocsFromDB = createAsyncThunk('doc/getAll', async (userRef, thunkAPI) => {
   try {
     const docs = await docService.getAllDocs(userRef);
@@ -27,23 +28,23 @@ export const getDocsFromDB = createAsyncThunk('doc/getAll', async (userRef, thun
     const convertTimestamp = (timestamp) => {
       const fireBaseTime = new Date(timestamp.seconds * 1000 + timestamp.nanoseconds / 1000000).toString();
       return fireBaseTime;
-      // const day =
-      //   fireBaseTime.getDate() < 10
-      //     ? `0${fireBaseTime.getDate()}`
-      //     : fireBaseTime.getDate();
-      // const month =
-      //   fireBaseTime.getMonth() < 10
-      //     ? `0${fireBaseTime.getMonth()}`
-      //     : fireBaseTime.getMonth();
-      // const year = fireBaseTime.getFullYear();
-
-      // return `${day}-${month}-${year}`;
     };
     docs.forEach((doc) => docsArr.push({ ...doc.data(), _id: doc.id }));
 
     return docsArr.map((doc) => {
       return { ...doc, createdAt: convertTimestamp(doc.createdAt) };
     });
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error.message);
+  }
+});
+
+// marking document important
+export const markDocImportant = createAsyncThunk('doc/mark', async (data, thunkAPI) => {
+  const [id, value] = data;
+  try {
+    await docService.markDocStar(id, value);
+    return [id, value];
   } catch (error) {
     return thunkAPI.rejectWithValue(error.message);
   }
@@ -81,6 +82,19 @@ export const docSlice = createSlice({
       .addCase(getDocsFromDB.fulfilled, (state, action) => {
         state.docs = action.payload;
         state.isLoading = false;
+      })
+      .addCase(markDocImportant.fulfilled, (state, action) => {
+        state.docs.forEach((doc) => {
+          if (doc._id === action.payload[0]) {
+            doc.isStarred = !action.payload[1];
+          }
+        });
+        state.isSuccess = true;
+        state.message = 'Document marked star';
+      })
+      .addCase(markDocImportant.rejected, (state, action) => {
+        state.isError = true;
+        state.message = action.payload;
       });
   },
 });

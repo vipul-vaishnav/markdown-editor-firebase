@@ -5,7 +5,7 @@ import FilterWindow from './FilterWindow';
 import { useSelector, useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 import Loader from './Loader';
-import { getDocsFromDB, clearState } from '../features/doc/docSlice';
+import { getDocsFromDB, markDocImportant, clearState } from '../features/doc/docSlice';
 import StarredIcon from './../icons/StarredIcon';
 import StarredIconTrue from './../icons/StarredIconTrue';
 import MoreIcon from './../icons/MoreIcon';
@@ -36,6 +36,10 @@ const List = () => {
     const year = fireBaseTime.getFullYear();
 
     return `${day}-${month}-${year}`;
+  };
+
+  const handleClick = (id, value) => {
+    dispatch(markDocImportant([id, value]));
   };
 
   return (
@@ -78,8 +82,8 @@ const List = () => {
         </>
       ) : (
         <>
-          <div className="overflow-x-auto text-back text-center">
-            <table className="table table-zebra w-full">
+          <div className="overflow-x-auto text-center text-back">
+            <table className="table w-full table-zebra">
               <thead className="text-center">
                 <tr>
                   <th></th>
@@ -95,17 +99,23 @@ const List = () => {
                   return (
                     <tr key={idx} className="text-center">
                       <th>{idx + 1}</th>
-                      <td className="text-left">{doc.name}</td>
+                      <td className="text-left">{doc.name.length === 0 ? 'Untitled' : doc.name}</td>
                       <td className="text-left">{doc._id}</td>
                       <td>{convertTimestamp(doc.createdAt)}</td>
                       <td>
                         <div className="tooltip" data-tip={doc.isStarred ? 'Unmark Star' : 'Mark Star'}>
-                          <button>{doc.isStarred ? <StarredIconTrue /> : <StarredIcon />}</button>
+                          <button
+                            onClick={() => {
+                              handleClick(doc._id, doc.isStarred);
+                            }}
+                          >
+                            {doc.isStarred ? <StarredIconTrue /> : <StarredIcon />}
+                          </button>
                         </div>
                       </td>
                       <td>
                         <div className="tooltip" data-tip="open in editor">
-                          <button className="btn btn-circle bg-secondary outline-none border-0 hover:bg-back btn-xs">
+                          <button className="border-0 outline-none btn btn-circle bg-secondary hover:bg-back btn-xs">
                             <MoreIcon />
                           </button>
                         </div>

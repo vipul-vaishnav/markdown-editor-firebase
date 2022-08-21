@@ -3,10 +3,11 @@ import EyeIcon from './../icons/EyeIcon';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import EyeOffIcon from './../icons/EyeOffIcon';
+import welcome from './../welcomeMD';
 
 const EditorMain = ({ lightMode }) => {
   const [hideMD, setHideMD] = useState(false);
-  const [value, setValue] = useState('# Welcome to *MARKDOWN*');
+  const [value, setValue] = useState(welcome);
   const ref = useRef();
   const handleHeight = (e) => {
     ref.current.style.height = 'auto';
@@ -57,7 +58,7 @@ const EditorMain = ({ lightMode }) => {
         >
           <textarea
             value={value}
-            className="w-full min-h-[calc(100%-1rem)] bg-transparent outline-none resize-none textarea-container"
+            className="w-full min-h-[calc(100%-1rem)] bg-transparent outline-none resize-none textarea-container font-markdown"
             onChange={(e) => {
               setValue(e.target.value);
             }}
@@ -68,7 +69,12 @@ const EditorMain = ({ lightMode }) => {
         </div>
         {/* PREVIEW */}
         <div
-          className={`${!hideMD && 'hidden'} prose prose-a:text-blue-500 prose-headings:text-gray-900 max-w-full ${
+          className={`${
+            !hideMD && 'hidden'
+          } prose prose-a:text-secondary prose-headings:text-gray-900 prose-blockquote:bg-${
+            lightMode ? 'gray-100' : 'gray-200'
+          } prose-blockquote:rounded-sm          
+          max-w-full ${
             !lightMode && 'prose-invert prose-headings:text-white'
           } text-current w-full h-full px-4 py-4 overflow-x-hidden overflow-y-auto text-left border-l-0 border-${
             lightMode ? 'gray-500' : 'white'

@@ -13,6 +13,11 @@ const EditorWindow = ({ setWindow, lightMode }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    if (!name || name.trim().length === 0) {
+      toast.error('Enter a name for the document');
+      return;
+    }
     dispatch(addNewDocumentInDB({ name, userRef: user?.uid, isStarred: false }));
   };
 
